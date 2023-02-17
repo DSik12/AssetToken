@@ -40,7 +40,7 @@ contract ERC20InvestmentToken is ERC20, Ownable {
     address _tokenHolder,
     uint256 _unlockedTokens
   ) external onlyOwner {
-    unlockedLimit[_tokenHolder] = _unlockedTokens;
+    unlockedLimit[_tokenHolder] += _unlockedTokens;
   }
 
   function transfer(address to, uint256 amount) public override returns (bool) {
@@ -49,6 +49,7 @@ contract ERC20InvestmentToken is ERC20, Ownable {
       "Amount Exceeds the Amount allowed to be transferred.Please contact admin."
     );
     address owner = _msgSender();
+    unlockedLimit[owner] -= amount;
     _transfer(owner, to, amount);
     return true;
   }
