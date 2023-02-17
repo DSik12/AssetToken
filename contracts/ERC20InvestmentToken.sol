@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract ERC20InvestmentToken is ERC20, Ownable {
   uint8 immutable tokendecimals;
 
-  mapping(address => uint256) unlockedLimit;
+  mapping(address => uint256) public unlockedLimit;
 
   modifier NotAllowed() {
     require(1 == 2, "Not Allowed");
@@ -45,7 +45,7 @@ contract ERC20InvestmentToken is ERC20, Ownable {
 
   function transfer(address to, uint256 amount) public override returns (bool) {
     require(
-      amount <= unlockedLimit[to],
+      amount <= unlockedLimit[msg.sender],
       "Amount Exceeds the Amount allowed to be transferred.Please contact admin."
     );
     address owner = _msgSender();
